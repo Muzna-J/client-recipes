@@ -40,5 +40,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/plugin-transform-modules-commonjs": "^7.24.1",
+    "@babel/preset-env": "^7.24.5",
+    "@babel/preset-react": "^7.24.1",
+    "@babel/preset-typescript": "^7.24.1",
+    "babel-jest": "^27.5.1",
+    "jest-watch-typeahead": "^2.2.2",
+    "ts-jest": "^27.1.2"
   }
 }

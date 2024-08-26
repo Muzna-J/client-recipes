@@ -1,13 +1,21 @@
-import React from "react";
-import "./App.css";
-import MealList from "./components/MealList";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { FC } from "react";
+import HomePage from "./components/HomePage";
+import CategoryMeals from "./components/CategoryMeals";
+import MealDetails from "./components/MealDetails";
+import Navbar from "./components/Navbar";
 
-function App() {
+const App: FC = () => {
   return (
-    <div className="App">
-      <MealList />
-    </div>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/meal/:idMeal" element={<MealDetails />} />
+        <Route path="/category/:categoryName" element={<CategoryMeals />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

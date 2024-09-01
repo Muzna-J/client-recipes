@@ -2,6 +2,17 @@ import { FC, useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { SimpleMeal } from "../types/types";
 import { fetchMealsByCategory } from "../services/mealService";
+import {
+  Container,
+  Typography,
+  Box,
+  Grid,
+  Card,
+  CardMedia,
+  CardContent,
+  CircularProgress,
+  Alert,
+} from "@mui/material";
 
 const CategoryMeals: FC = () => {
   const { categoryName } = useParams<{ categoryName: string }>();
@@ -20,7 +31,7 @@ const CategoryMeals: FC = () => {
         } else {
           setError("Category name is not available");
         }
-      } catch (err) {
+      } catch (error) {
         setError("Failed to fetch meals for this category");
       }
       setLoading(false);
@@ -28,24 +39,69 @@ const CategoryMeals: FC = () => {
     loadMeals();
   }, [categoryName]);
 
+  if (loading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box mt={2}>
+        <Alert severity="error">{error}</Alert>
+      </Box>
+    );
+  }
+
   return (
-    <div>
-      <h2>Meals in {categoryName} Category</h2>
-      {loading && <p>Loading..</p>}
-      {error && <p>{error}</p>}
+    <Container maxWidth="lg">
+      <Typography variant="h4" gutterBottom align="center">
+        Meals in {categoryName} Category
+      </Typography>
       {meals && (
-        <ul>
+        <Grid container spacing={3}>
           {meals.map((meal) => (
-            <li key={meal.idMeal}>
-              <Link to={`/meal/${meal.idMeal}`}>
-                <h3>{meal.strMeal}</h3>
-                <img src={meal.strMealThumb} alt={meal.strMeal} />
-              </Link>
-            </li>
+            <Grid item xs={12} sm={6} md={4} key={meal.idMeal}>
+              <Card
+                component={Link}
+                to={`/meal/${meal.idMeal}`}
+                sx={{
+                  textDecoration: "none",
+                  transition: "transform 0.3s",
+                  "&:hover": {
+                    transform: "scale(1.05)",
+                  },
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  height="200"
+                  image={meal.strMealThumb}
+                  alt={meal.strMeal}
+                  sx={{ objectFit: "cover" }}
+                />
+                <CardContent>
+                  <Typography
+                    variant="h6"
+                    component="div"
+                    sx={{ textAlign: "center", fontWeight: "bold" }}
+                  >
+                    {meal.strMeal}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
           ))}
-        </ul>
+        </Grid>
       )}
-    </div>
+    </Container>
   );
 };
 

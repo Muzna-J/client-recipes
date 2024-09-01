@@ -50,7 +50,16 @@ const SearchResults: FC<SearchResultsProps> = ({
   }, [searchTerm, setSearchError]);
 
   if (loading) {
-    return <CircularProgress />;
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (meals.length === 0) {
@@ -62,29 +71,40 @@ const SearchResults: FC<SearchResultsProps> = ({
   }
 
   return (
-    <Box mt={2}>
-      <Typography variant="h4" gutterBottom>
+    <Box mt={4}>
+      <Typography variant="h4" gutterBottom align="center">
         Search Results
       </Typography>
-      <Grid container spacing={2}>
+      <Grid container spacing={3}>
         {meals.map((meal) => (
           <Grid item xs={12} sm={6} md={4} key={meal.idMeal}>
             <Card
               component={Link}
               to={`/meal/${meal.idMeal}`}
-              sx={{ textDecoration: "none" }}
+              sx={{
+                textDecoration: "none",
+                transition: "transform 0.3s",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                },
+              }}
             >
+              <CardMedia
+                component="img"
+                height="200"
+                image={meal.strMealThumb}
+                alt={meal.strMeal}
+                sx={{ objectFit: "cover" }}
+              />
               <CardContent>
-                <Typography variant="h6" component="div">
+                <Typography
+                  variant="h6"
+                  component="div"
+                  sx={{ textAlign: "center", fontWeight: "bold" }}
+                >
                   {meal.strMeal}
                 </Typography>
               </CardContent>
-              <CardMedia
-                component="img"
-                height="140"
-                image={meal.strMealThumb}
-                alt={meal.strMeal}
-              />
             </Card>
           </Grid>
         ))}
